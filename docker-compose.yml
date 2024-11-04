@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development 
+    container_name: nestjs-app
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app  # Монтируем директорию проекта в контейнер
+      - /app/node_modules  # Исключаем node_modules, чтобы использовать контейнерные зависимости
+    depends_on:
+      - db
+    networks:
+      - nest-network
+    environment:
+      CHOKIDAR_USEPOLLING: "true"  # Включаем polling для работы watch в Docker
+
+  db:
+    image: postgres:15-alpine
+    container_name: postgres-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: nestjs_user
+      POSTGRES_PASSWORD: nestjs_password
+      POSTGRES_DB: nestjs_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - nest-network
+
+# Настройка сети для взаимодействия сервисов
+networks:
+  nest-network:
+    driver: bridge
+
+# Том для хранения данных Postgres
+volumes:
+  pgdata:
