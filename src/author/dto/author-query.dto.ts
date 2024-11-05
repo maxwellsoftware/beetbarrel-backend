@@ -24,7 +24,7 @@ export class AuthorQueryDto extends PaginationRequestDto {
   orderBy?: SortOrder = SortOrder.ASC;
 }
 
-export class AuthorQeuryResponseDto extends PaginationMetaResponseDto {
+export class AuthorQueryResponseDto extends PaginationMetaResponseDto {
   @ApiProperty({ type: [AuthorWithCompositionsDto] })
   data: AuthorWithCompositionsDto[];
 }

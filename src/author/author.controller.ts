@@ -12,7 +12,7 @@ import {
 import { AuthorService } from './author.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorDto } from './dto/update-author.dto';
-import { AuthorQeuryResponseDto, AuthorQueryDto } from './dto/author-query.dto';
+import { AuthorQueryResponseDto, AuthorQueryDto } from './dto/author-query.dto';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
 import { AuthorDto } from './dto/author.dto';
 
@@ -28,7 +28,7 @@ export class AuthorController {
   }
 
   @Get()
-  @ApiResponse({ status: HttpStatus.OK, type: AuthorQeuryResponseDto })
+  @ApiResponse({ status: HttpStatus.OK, type: AuthorQueryResponseDto })
   findAll(@Query() query: AuthorQueryDto) {
     return this.authorService.findAll(query);
   }
