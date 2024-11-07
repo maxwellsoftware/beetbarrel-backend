@@ -24,12 +24,19 @@ export class CompositionService {
       filters.author = { name: { contains: authorName, mode: 'insensitive' } };
     }
 
+    const hasFilters = Object.keys(filters).length > 0;
+
     const skip = (page - 1) * limit;
     const take = limit;
 
     const compositions = await this.prismaService.composition.findMany({
-      where: filters,
-      orderBy: sortBy ? { [sortBy]: orderBy } : undefined,
+      where: hasFilters ? { OR: [filters] } : undefined,
+      orderBy:
+        sortBy && orderBy
+          ? sortBy.map((field, index) => ({
+              [field]: orderBy[index],
+            }))
+          : undefined,
       skip,
       take,
       include: {

@@ -3,6 +3,7 @@ import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { PaginationMetaResponseDto, PaginationRequestDto } from 'src/common/dto/pagination.dto';
 import { SortOrder } from 'src/common/enums/query.enum';
 import { CompotisionWithAuthorDto } from './composition.dto';
+import { Transform } from 'class-transformer';
 
 enum CompositionSortBy {
   NAME = 'name',
@@ -36,24 +37,24 @@ export class CompositionQueryDto extends PaginationRequestDto {
   authorName?: string;
 
   @ApiPropertyOptional({
-    description: 'Sort by field',
-    enum: () => CompositionSortBy,
-    enumName: 'CompositionSortBy',
-    example: CompositionSortBy.NAME,
+    description: 'Fields to sort by, separated by commas (e.g., name,duration)',
+    enum: CompositionSortBy,
+    isArray: true,
   })
   @IsOptional()
-  @IsEnum(CompositionSortBy)
-  sortBy?: CompositionSortBy = CompositionSortBy.NAME;
+  @Transform(({ value }) => value.split(','))
+  @IsEnum(CompositionSortBy, { each: true })
+  sortBy?: CompositionSortBy[];
 
   @ApiPropertyOptional({
-    description: 'Order by ',
-    enum: () => SortOrder,
-    enumName: 'SortOrder',
-    example: SortOrder.ASC,
+    description: 'Order for each sort field, separated by commas (e.g., asc,desc)',
+    enum: SortOrder,
+    isArray: true,
   })
   @IsOptional()
-  @IsEnum(SortOrder)
-  orderBy?: SortOrder = SortOrder.ASC;
+  @Transform(({ value }) => value.split(','))
+  @IsEnum(SortOrder, { each: true })
+  orderBy?: SortOrder[];
 }
 
 export class CompositionQueryResponseDto extends PaginationMetaResponseDto {

@@ -20,33 +20,33 @@ import { CompositionDto } from './dto/composition.dto';
 export class CompositionController {
   constructor(private readonly compositionService: CompositionService) {}
 
-  @Post()
+  @Post('/')
   @ApiBody({ type: CreateCompositionDto })
   @ApiResponse({ status: HttpStatus.CREATED, type: CompositionDto })
   create(@Body() createCompositionDto: CreateCompositionDto) {
     return this.compositionService.create(createCompositionDto);
   }
 
-  @Get()
+  @Get('/')
   @ApiResponse({ status: HttpStatus.OK, type: CompositionQueryResponseDto })
   findAll(@Query() query: CompositionQueryDto) {
     return this.compositionService.findAll(query);
   }
 
-  @Get(':id')
+  @Get('/:id')
   @ApiResponse({ status: HttpStatus.OK, type: CompositionDto })
   findOne(@Param('id') id: string) {
     return this.compositionService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch('/:id')
   @ApiBody({ type: UpdateCompositionDto })
   @ApiResponse({ status: HttpStatus.OK, type: CompositionDto })
   update(@Param('id') id: string, @Body() updateCompositionDto: UpdateCompositionDto) {
     return this.compositionService.update(id, updateCompositionDto);
   }
 
-  @Delete(':id')
+  @Delete('/:id')
   @ApiResponse({ status: HttpStatus.NO_CONTENT })
   remove(@Param('id') id: string) {
     return this.compositionService.remove(id);

@@ -23,6 +23,6 @@ export class AuthorDto implements Author {
 }
 
 export class AuthorWithCompositionsDto extends AuthorDto {
-  @ApiProperty({ type: CompositionDto })
+  @ApiProperty({ type: [CompositionDto] })
   compositions: Composition[];
 }
